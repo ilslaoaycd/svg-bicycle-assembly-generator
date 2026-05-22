@@ -1,0 +1,56 @@
+{
+  "name": "svg-bicycle-assembly-generator",
+  "version": "1.0.0",
+  "description": "Pure JavaScript SVG composer for bicycle wheel, hub, cassette, and drivetrain assemblies.",
+  "homepage": "https://github.com/ilslaoaycd/svg-bicycle-assembly-generator#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilslaoaycd/svg-bicycle-assembly-generator.git"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "browser": "./dist/bicycle-assembly-svg.global.js",
+  "exports": {
+    ".": {
+      "browser": "./dist/bicycle-assembly-svg.global.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "examples/browser",
+    "examples/svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "examples": "node scripts/generate-examples.mjs",
+    "pretest": "npm run build && npm run examples",
+    "test": "node --test",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "svg",
+    "bicycle",
+    "bike",
+    "wheel",
+    "cassette",
+    "drivetrain",
+    "assembly",
+    "generator"
+  ],
+  "author": "Isaac Lloyd",
+  "license": "MIT",
+  "dependencies": {
+    "svg-bicycle-drivetrain-generator": "github:ilslaoaycd/svg-bicycle-drivetrain-generator",
+    "svg-bicycle-wheel-generator": "github:ilslaoaycd/svg-bicycle-wheel-generator"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.4"
+  }
+}
