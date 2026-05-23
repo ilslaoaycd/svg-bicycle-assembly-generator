@@ -93,9 +93,12 @@ Generated examples are written to `examples/svg`:
 - `rear-assembly-side.svg`
 - `rear-assembly-drive-face.svg`
 - `wheel-drivetrain-animated.svg`
+- `drivetrain-animated-base.svg`
+- `spinning-rear-wheel.svg`
 
 For a quick browser demo, open `examples/browser/spinning-demo.html` from a local
-static server.
+static server. The demo uses `drivetrain-animated-base.svg` plus a separate
+CSS-animated `spinning-rear-wheel.svg` layer for smoother browser rotation.
 
 ## Development
 

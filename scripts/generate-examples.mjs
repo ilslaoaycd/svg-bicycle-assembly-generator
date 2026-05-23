@@ -1,5 +1,10 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import { renderRearAssemblySvg, renderWheelDrivetrainSvg } from '../src/index.js';
+import {
+  renderRearAssemblySvg,
+  renderRearWheelSvg,
+  renderWheelDrivetrainBaseSvg,
+  renderWheelDrivetrainSvg
+} from '../src/index.js';
 
 await mkdir('examples/svg', { recursive: true });
 
@@ -15,7 +20,7 @@ const common = {
 
 await writeFile('examples/svg/rear-assembly-side.svg', renderRearAssemblySvg({ ...common, view: 'side' }));
 await writeFile('examples/svg/rear-assembly-drive-face.svg', renderRearAssemblySvg({ ...common, view: 'driveFace' }));
-await writeFile('examples/svg/wheel-drivetrain-animated.svg', renderWheelDrivetrainSvg({
+const drivetrainOptions = {
   ...common,
   drivetrain: {
     chainring: 30,
@@ -25,4 +30,8 @@ await writeFile('examples/svg/wheel-drivetrain-animated.svg', renderWheelDrivetr
     style: 'classicSteel',
     animation: { enabled: true, rpm: 8 }
   }
-}));
+};
+
+await writeFile('examples/svg/wheel-drivetrain-animated.svg', renderWheelDrivetrainSvg(drivetrainOptions));
+await writeFile('examples/svg/drivetrain-animated-base.svg', renderWheelDrivetrainBaseSvg(drivetrainOptions));
+await writeFile('examples/svg/spinning-rear-wheel.svg', renderRearWheelSvg(common));

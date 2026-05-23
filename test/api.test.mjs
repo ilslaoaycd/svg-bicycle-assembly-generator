@@ -5,7 +5,9 @@ import { describe, test } from 'node:test';
 import {
   BicycleAssemblySVG,
   calculateRearAssemblyLayout,
+  renderRearWheelSvg,
   renderRearAssemblySvg,
+  renderWheelDrivetrainBaseSvg,
   renderWheelDrivetrainSvg
 } from '../src/index.js';
 
@@ -19,7 +21,9 @@ describe('public API', () => {
   test('exports facade and convenience functions', () => {
     assert.equal(typeof BicycleAssemblySVG, 'function');
     assert.equal(typeof calculateRearAssemblyLayout, 'function');
+    assert.equal(typeof renderRearWheelSvg, 'function');
     assert.equal(typeof renderRearAssemblySvg, 'function');
+    assert.equal(typeof renderWheelDrivetrainBaseSvg, 'function');
     assert.equal(typeof renderWheelDrivetrainSvg, 'function');
   });
 
@@ -60,6 +64,26 @@ describe('public API', () => {
     assert.match(svg, /<animateMotion/);
   });
 
+  test('animated drivetrain base can omit embedded wheel for CSS layer demos', () => {
+    const svg = renderWheelDrivetrainBaseSvg({
+      ...assemblyOptions,
+      drivetrain: {
+        chainring: 30,
+        cogs: [10, 12, 14, 16, 18],
+        selectedCog: 16,
+        chainstay: 420,
+        animation: { enabled: true, rpm: 8 }
+      }
+    });
+    const wheel = renderRearWheelSvg(assemblyOptions);
+
+    assert.doesNotMatch(svg, /assembly-animated-rear-wheel/);
+    assert.match(svg, /data-wheel-duration="4s"/);
+    assert.match(wheel, /^<svg /);
+    assert.match(wheel, /wheel-face-right-mirror/);
+  });
+
+
   test('CommonJS bundle can be required', () => {
     const require = createRequire(import.meta.url);
     const api = require('../dist/index.cjs');
@@ -79,9 +103,13 @@ describe('public API', () => {
     const side = await readFile('examples/svg/rear-assembly-side.svg', 'utf8');
     const face = await readFile('examples/svg/rear-assembly-drive-face.svg', 'utf8');
     const animated = await readFile('examples/svg/wheel-drivetrain-animated.svg', 'utf8');
+    const base = await readFile('examples/svg/drivetrain-animated-base.svg', 'utf8');
+    const wheel = await readFile('examples/svg/spinning-rear-wheel.svg', 'utf8');
 
     assert.match(side, /assembly-cassette-side/);
     assert.match(face, /assembly-cassette-face/);
     assert.match(animated, /assembly-animated-rear-wheel/);
+    assert.doesNotMatch(base, /assembly-animated-rear-wheel/);
+    assert.match(wheel, /wheel-face-right-mirror/);
   });
 });
