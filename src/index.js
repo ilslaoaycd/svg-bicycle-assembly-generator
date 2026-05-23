@@ -1,6 +1,5 @@
 import {
   calculateRearHubMount,
-  renderWheelFaceSvg,
   renderWheelFaceGroup,
   renderWheelSideGroup
 } from 'svg-bicycle-wheel-generator';
@@ -166,7 +165,6 @@ export function renderRearAssemblySvg(options = {}) {
 }
 
 export function renderWheelDrivetrainSvg(options = {}) {
-  const wheelLayer = options.wheelLayer || 'svg';
   const drivetrain = {
     preset: 'mtbTenFiftyTwo',
     ...(options.drivetrain || {}),
@@ -192,6 +190,7 @@ export function renderWheelDrivetrainSvg(options = {}) {
   const wheelDuration = layout.animation?.cassetteDuration || 4;
   const wheelGroup = tag('g', {
     class: 'assembly-animated-rear-wheel',
+    style: 'transform-box: fill-box; transform-origin: center; will-change: transform;',
     transform: `translate(${fmt(layout.rearCenter.x)} ${fmt(layout.rearCenter.y)}) rotate(${fmt(radToDeg(layout.rearRotation))})`
   }, `${tag('animateTransform', {
     attributeName: 'transform',
@@ -204,23 +203,12 @@ export function renderWheelDrivetrainSvg(options = {}) {
   }, null)}${tag('g', { transform: 'translate(-350 -350)' }, wheel)}`);
 
   return svgDocument(viewBox.map(fmt).join(' '), [
-    wheelLayer === 'none' ? '' : wheelGroup,
+    wheelGroup,
     tag('g', { class: 'assembly-drivetrain' }, extractSvgContent(drivetrainSvg))
   ].join(''), {
     class: 'bicycle-assembly-svg bicycle-assembly-wheel-drivetrain',
     'data-cassette-rpm': fmt(layout.animation?.cassetteRpm || 0),
     'data-wheel-duration': `${fmt(wheelDuration)}s`
-  });
-}
-
-export function renderWheelDrivetrainBaseSvg(options = {}) {
-  return renderWheelDrivetrainSvg({ ...options, wheelLayer: 'none' });
-}
-
-export function renderRearWheelSvg(options = {}) {
-  return renderWheelFaceSvg({
-    ...wheelOptions(options),
-    view: { wheelFaceSide: 'right', hubFaceSide: 'right' }
   });
 }
 
@@ -231,14 +219,6 @@ export class BicycleAssemblySVG {
 
   wheelDrivetrain(options = {}) {
     return renderWheelDrivetrainSvg(options);
-  }
-
-  wheelDrivetrainBase(options = {}) {
-    return renderWheelDrivetrainBaseSvg(options);
-  }
-
-  rearWheel(options = {}) {
-    return renderRearWheelSvg(options);
   }
 
   layout(options = {}) {

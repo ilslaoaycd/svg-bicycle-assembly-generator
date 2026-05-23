@@ -23,8 +23,6 @@ __export(index_exports, {
   calculateRearAssemblyLayout: () => calculateRearAssemblyLayout,
   default: () => index_default,
   renderRearAssemblySvg: () => renderRearAssemblySvg,
-  renderRearWheelSvg: () => renderRearWheelSvg,
-  renderWheelDrivetrainBaseSvg: () => renderWheelDrivetrainBaseSvg,
   renderWheelDrivetrainSvg: () => renderWheelDrivetrainSvg
 });
 module.exports = __toCommonJS(index_exports);
@@ -3349,7 +3347,6 @@ function renderRearAssemblySvg(options = {}) {
   ].join(""), { class: "bicycle-assembly-svg bicycle-assembly-side" });
 }
 function renderWheelDrivetrainSvg(options = {}) {
-  const wheelLayer = options.wheelLayer || "svg";
   const drivetrain = {
     preset: "mtbTenFiftyTwo",
     ...options.drivetrain || {},
@@ -3375,6 +3372,7 @@ function renderWheelDrivetrainSvg(options = {}) {
   const wheelDuration = layout.animation?.cassetteDuration || 4;
   const wheelGroup = tag2("g", {
     class: "assembly-animated-rear-wheel",
+    style: "transform-box: fill-box; transform-origin: center; will-change: transform;",
     transform: `translate(${fmt2(layout.rearCenter.x)} ${fmt2(layout.rearCenter.y)}) rotate(${fmt2(radToDeg(layout.rearRotation))})`
   }, `${tag2("animateTransform", {
     attributeName: "transform",
@@ -3386,21 +3384,12 @@ function renderWheelDrivetrainSvg(options = {}) {
     additive: "sum"
   }, null)}${tag2("g", { transform: "translate(-350 -350)" }, wheel)}`);
   return svgDocument2(viewBox.map(fmt2).join(" "), [
-    wheelLayer === "none" ? "" : wheelGroup,
+    wheelGroup,
     tag2("g", { class: "assembly-drivetrain" }, extractSvgContent(drivetrainSvg))
   ].join(""), {
     class: "bicycle-assembly-svg bicycle-assembly-wheel-drivetrain",
     "data-cassette-rpm": fmt2(layout.animation?.cassetteRpm || 0),
     "data-wheel-duration": `${fmt2(wheelDuration)}s`
-  });
-}
-function renderWheelDrivetrainBaseSvg(options = {}) {
-  return renderWheelDrivetrainSvg({ ...options, wheelLayer: "none" });
-}
-function renderRearWheelSvg(options = {}) {
-  return renderWheelFaceSvg({
-    ...wheelOptions(options),
-    view: { wheelFaceSide: "right", hubFaceSide: "right" }
   });
 }
 var BicycleAssemblySVG = class {
@@ -3409,12 +3398,6 @@ var BicycleAssemblySVG = class {
   }
   wheelDrivetrain(options = {}) {
     return renderWheelDrivetrainSvg(options);
-  }
-  wheelDrivetrainBase(options = {}) {
-    return renderWheelDrivetrainBaseSvg(options);
-  }
-  rearWheel(options = {}) {
-    return renderRearWheelSvg(options);
   }
   layout(options = {}) {
     return calculateRearAssemblyLayout(options);

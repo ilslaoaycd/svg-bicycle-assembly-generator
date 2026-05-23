@@ -1,8 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import {
   renderRearAssemblySvg,
-  renderRearWheelSvg,
-  renderWheelDrivetrainBaseSvg,
   renderWheelDrivetrainSvg
 } from '../src/index.js';
 
@@ -33,5 +31,3 @@ const drivetrainOptions = {
 };
 
 await writeFile('examples/svg/wheel-drivetrain-animated.svg', renderWheelDrivetrainSvg(drivetrainOptions));
-await writeFile('examples/svg/drivetrain-animated-base.svg', renderWheelDrivetrainBaseSvg(drivetrainOptions));
-await writeFile('examples/svg/spinning-rear-wheel.svg', renderRearWheelSvg(common));

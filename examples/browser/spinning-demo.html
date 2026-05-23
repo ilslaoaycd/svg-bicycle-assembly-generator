@@ -84,47 +84,6 @@
       object-fit: contain;
     }
 
-    .layered-demo {
-      position: relative;
-      width: min(100%, calc((100vh - 108px) * 1.37));
-      aspect-ratio: 934.737 / 682;
-      contain: layout paint;
-    }
-
-    .layered-demo img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .drivetrain-layer {
-      z-index: 2;
-    }
-
-    .spinning-wheel-layer {
-      left: 2.568%;
-      top: 3.519%;
-      width: 67.826%;
-      height: auto;
-      aspect-ratio: 1;
-      transform-origin: 50% 50%;
-      transform: translateZ(0);
-      will-change: transform;
-      z-index: 1;
-      animation: rear-wheel-spin 9s linear infinite;
-    }
-
-    @keyframes rear-wheel-spin {
-      from {
-        transform: translateZ(0) rotate(80deg);
-      }
-      to {
-        transform: translateZ(0) rotate(440deg);
-      }
-    }
-
     .side-stack {
       display: grid;
       gap: 16px;
@@ -156,13 +115,10 @@
     <section class="hero">
       <div class="panel-title">
         <span>Animated drivetrain with rear wheel</span>
-        <span>CSS-composited wheel layer</span>
+        <span>single packed SVG</span>
       </div>
       <div class="preview">
-        <div class="layered-demo" aria-label="Animated drivetrain with rear wheel spinning">
-          <img class="drivetrain-layer" src="../svg/drivetrain-animated-base.svg" alt="">
-          <img class="spinning-wheel-layer" src="../svg/spinning-rear-wheel.svg" alt="">
-        </div>
+        <img src="../svg/wheel-drivetrain-animated.svg" alt="Animated drivetrain with rear wheel spinning">
       </div>
     </section>
 
